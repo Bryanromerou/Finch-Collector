@@ -1,13 +1,18 @@
 from django.db import models
 
-# class Reptile:
-#     def __init__(self, name , species , breed, color, age = 0):
-#         self.name = name
-#         self.species = species
-#         self.breed = breed
-#         self.color = color
-#         self.age = age
-#         self.img = ""
+MEALS = (
+    ("B", "Breakfast"),
+    ("L", "Lunch"),
+    ("D", "Dinner"),
+)
+LOCATIONS = (
+    ("F", "Farm"),
+    ("H", "House"),
+    ("A", "Appartment"),
+    ("M", "Mobile Home"),
+    ("L", "Homeless"),
+)
+
 class Reptile(models.Model):
     name = models.CharField(max_length=200)
     species = models.CharField(max_length=100)
@@ -18,9 +23,35 @@ class Reptile(models.Model):
     def __str__(self):
         return self.name
 
-# reptiles = [
-#     Reptile("Peter Parker", "Turtle" ,"Sulacda", "Brown", 1),
-#     Reptile("Ramona Flowers", "Turtle" ,"Sulacda", "Black", 1),
-#     Reptile("Biden", "Chameleons" ,"Veiled", "All", 1),
-#     Reptile("Daisy", "Snake" ,"Emerald Tree Boa", "Green", 1),
-# ]
+class Feeding(models.Model):
+    date = models.DateField('feeding date')
+    meal = models.CharField(
+        max_length = 1,
+        choices = MEALS,
+        default = MEALS[0][0]
+    )
+
+    reptile = models.ForeignKey(Reptile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.get_meal_display()} on {self.date}'
+
+class Home(models.Model):
+    address = models.CharField(max_length = 100)
+    location = models.CharField(
+        max_length = 1,
+        choices = LOCATIONS,
+        default = LOCATIONS[0][0]
+    )
+    city = models.CharField(max_length = 100)
+    state = models.CharField(max_length = 100)
+    zipcode = models.CharField(max_length = 100)
+    occupants = models.IntegerField()
+
+    reptile = models.OneToOneField(
+        Reptile,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+

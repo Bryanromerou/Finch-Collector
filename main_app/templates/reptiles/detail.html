@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+
+{% block title %}
+See one Reptile
+{% endblock %}
+
+{% block content %}
+<h1>See One Reptile</h1>
+<div class = "card">
+    <div class = "card-content">
+        <span class = 'card-title'>{{reptile.name}}</span>
+        <p>Breed: {{reptile.breed}}</p>
+    </div>
+</div>
+<div class="col s6">
+  <!-- new code below -->
+  <form action="{% url 'add_feeding' reptile.id %}" method="post">
+    {% csrf_token %}
+    {{ feeding_form.as_p }}
+    <input type="submit" class="btn" value="Add Feeding">
+</form>
+<div class="col s6">
+  <form action="{% url 'add_home' reptile.id%}" method = "POST">
+    {% csrf_token %}
+    {{ home_form.as_p }}
+    <input type="submit" class="btn" value="Add Home">
+  </form>
+<div>
+{% comment %} <div class="col s6">
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Meal</th></tr>
+      </thead>
+      <tbody>
+        {% for feeding in reptile.feeding_set.all %}
+          <tr>
+            <td>{{feeding.date}}</td>
+            <td>{{feeding.get_meal_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div> {% endcomment %}
+
+
+{% endblock %}         
