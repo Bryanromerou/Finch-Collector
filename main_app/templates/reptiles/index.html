@@ -6,15 +6,16 @@ All Reptiles
 
 {% block content %}
     <h1>Look at all my Reptiles</h1>
-    {% for reptile in reptiles %}
-        {% comment %} <a href="/reptiles/{{reptile.id}}"> ONE WAY TO DO IT {% endcomment %}
-        <a href="{% url 'detail' reptile.id %}">
-            <div class = "card">
-                <div class = "card-content">
-                    <span class = 'card-title'>{{reptile.name}}</span>
-                    <p>Breed: {{reptile.breed}}</p>
+    <div class = "allCards">
+        {% for reptile in reptiles %}
+            <a href="{% url 'detail' reptile.id %}">
+                <div class = "card">
+                    <div class = "card-content">
+                        <span class = 'card-title'>{{reptile.name}}</span>
+                        <p>Breed: {{reptile.breed}}</p>
+                    </div>
                 </div>
-            </div>
-        </a>
-    {% endfor %}
+            </a>
+        {% endfor %}
+    </div>
 {% endblock %}

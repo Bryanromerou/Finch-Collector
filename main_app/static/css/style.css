@@ -1,6 +1,22 @@
 body{
-    background: lightgrey
+    background: lightgrey;
 }
+
+/* NAV BAR */
 li{
    list-style-type: none; 
+}
+#siteLogo{
+    margin-left: 20px;
+}
+
+
+/* REPTILE INDEX */
+.card{
+    width: 15vw;
+    margin: 10px;
+}
+.allCards{
+    display: flex;
+    padding-left: 10px;
 }

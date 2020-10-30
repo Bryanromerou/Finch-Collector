@@ -5,42 +5,91 @@ See one Reptile
 {% endblock %}
 
 {% block content %}
-<h1>See One Reptile</h1>
-<div class = "card">
-    <div class = "card-content">
-        <span class = 'card-title'>{{reptile.name}}</span>
-        <p>Breed: {{reptile.breed}}</p>
-    </div>
-</div>
-<div class="col s6">
-  <!-- new code below -->
-  <form action="{% url 'add_feeding' reptile.id %}" method="post">
-    {% csrf_token %}
-    {{ feeding_form.as_p }}
-    <input type="submit" class="btn" value="Add Feeding">
-</form>
-<div class="col s6">
-  <form action="{% url 'add_home' reptile.id%}" method = "POST">
-    {% csrf_token %}
-    {{ home_form.as_p }}
-    <input type="submit" class="btn" value="Add Home">
-  </form>
-<div>
-{% comment %} <div class="col s6">
-    <table class="striped">
-      <thead>
-        <tr><th>Date</th><th>Meal</th></tr>
-      </thead>
-      <tbody>
-        {% for feeding in reptile.feeding_set.all %}
-          <tr>
-            <td>{{feeding.date}}</td>
-            <td>{{feeding.get_meal_display}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-</div> {% endcomment %}
+<h1>{{ reptile.name }}</h1>
 
+<div class="row">
+  <div class="col s6">
+    <div class = "card">
+      <div class = "card-content">
+          <span class = 'card-title'>{{reptile.name}}</span>
+          <p>Breed: {{reptile.breed}}</p>
+      </div>
+    </div>
+  
+    <div class="card-action">
+        <a href = "{% url 'delete_reptile' reptile.id %}" class="btn-small red">Remove</a>
+        <a href = "{% url 'edit_reptile' reptile.id %}" class="btn-small">Edit</a>
+    </div>
+  </div>
+
+  <div class="col s6">
+    <form action="{% url 'add_feeding' reptile.id %}" method="post">
+      {% csrf_token %}
+      {{ feeding_form.as_p }}
+      <input type="submit" class="btn" value="Add Feeding">
+    </form>
+    <div class="col s6">
+      <table class="striped">
+        <thead>
+          <tr><th>Date</th><th>Meal</th></tr>
+        </thead>
+        <tbody>
+          {% for feeding in reptile.feeding_set.all %}
+            <tr>
+              <td>{{feeding.date}}</td>
+              <td>{{feeding.get_meal_display}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+
+
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ reptile.name }}'s Toys</h3>
+    {% if reptile.toys.count %}
+      {% for toy in reptile.toys.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+            </span>
+            <a href = "{% url 'remove_toy' reptile.id toy.id %}" class="btn-small red">Remove</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Toys :(</h5>
+    {% endif %}
+  </div>
+
+  <div class="col s6">
+    <h3>Available Toys</h3>
+    {% if toys.count %}
+    <div class="allCards">
+      {% for toy in toys.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_toy' reptile.id toy.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+      <h5>{{reptile.name}} Already Has All Toys Available</h5>
+    {% endif %}
+  </div>
+</div>
 
 {% endblock %}         

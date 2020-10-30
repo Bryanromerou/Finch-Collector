@@ -18,3 +18,11 @@ class HomeForm(forms.ModelForm):
     class Meta:
         model = Home
         fields = ("address","location","city", "state", "zipcode", "occupants")
+
+
+class ReptileForm(forms.ModelForm):
+    
+    class Meta:
+        model = Reptile
+        fields = ("name","species","breed", "color", "age")
+
